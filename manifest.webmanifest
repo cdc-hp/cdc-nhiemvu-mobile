@@ -1,0 +1,17 @@
+{
+  "name": "Quản lý Nhiệm vụ & Báo cáo - CDC Hải Phòng",
+  "short_name": "CDC Nhiệm vụ",
+  "description": "Theo dõi nhiệm vụ, cập nhật tiến độ và xem báo cáo tổng hợp của CDC Hải Phòng.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#0a3d68",
+  "lang": "vi",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icons/icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" }
+  ]
+}

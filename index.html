@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quản lý Nhiệm vụ & Báo cáo - CDC Hải Phòng</title>
+  <meta name="theme-color" content="#0a3d68">
+  <meta name="description" content="Theo dõi nhiệm vụ, cập nhật tiến độ và xem báo cáo tổng hợp của CDC Hải Phòng.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.png">
+  <link rel="apple-touch-icon" href="icons/icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============================= HEADER ============================= -->
+  <header class="cdc-m-header">
+    <div class="cdc-m-header__brand">
+      <img src="icons/icon.png" class="cdc-m-header__logo" alt="Logo">
+      <div class="cdc-m-header__title">CDC Nhiệm vụ</div>
+    </div>
+    <div class="cdc-m-header__user">
+      <div class="cdc-m-header__user-name">
+        <b id="headerUserName">Khách</b>
+        <span id="headerUserDept">—</span>
+      </div>
+      <button class="cdc-m-switch-btn" id="btnDoiNguoiDung" title="Đổi người dùng">⇄</button>
+    </div>
+  </header>
+
+  <!-- ============================= MAIN ============================= -->
+  <main class="cdc-m-main">
+
+    <div class="cdc-m-offline-banner" id="offlineBanner">
+      📡 Không có mạng — dữ liệu có thể chưa cập nhật mới nhất.
+      <button id="btnThuLaiOffline">Thử lại</button>
+    </div>
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="cdc-m-view active" id="view-dashboard">
+      <div class="cdc-m-page-title">📊 Tổng quan</div>
+      <div class="cdc-m-stat-grid">
+        <div class="cdc-m-stat cdc-m-stat--total"><div class="cdc-m-stat__value" id="statTongSo">0</div><div class="cdc-m-stat__label">Tổng số nhiệm vụ</div></div>
+        <div class="cdc-m-stat cdc-m-stat--done"><div class="cdc-m-stat__value" id="statHoanThanh">0</div><div class="cdc-m-stat__label">Hoàn thành</div></div>
+        <div class="cdc-m-stat cdc-m-stat--doing"><div class="cdc-m-stat__value" id="statDangThucHien">0</div><div class="cdc-m-stat__label">Đang thực hiện</div></div>
+        <div class="cdc-m-stat cdc-m-stat--late"><div class="cdc-m-stat__value" id="statChamTienDo">0</div><div class="cdc-m-stat__label">Chậm tiến độ</div></div>
+        <div class="cdc-m-stat cdc-m-stat--soon"><div class="cdc-m-stat__value" id="statSapDenHan">0</div><div class="cdc-m-stat__label">Sắp đến hạn</div></div>
+        <div class="cdc-m-stat cdc-m-stat--overdue"><div class="cdc-m-stat__value" id="statQuaHan">0</div><div class="cdc-m-stat__label">Quá hạn</div></div>
+      </div>
+      <div class="cdc-m-card">
+        <div class="cdc-m-card__title">⏰ Sắp đến hạn</div>
+        <div id="dsSapDenHan"><div class="cdc-m-empty">Đang tải...</div></div>
+      </div>
+    </section>
+
+    <!-- ---------- NHIỆM VỤ ---------- -->
+    <section class="cdc-m-view" id="view-tasks">
+      <div class="cdc-m-page-title">📋 Nhiệm vụ</div>
+      <div class="cdc-m-filter-row">
+        <input type="text" class="cdc-m-search" id="taskSearch" placeholder="Tìm theo mã, trích yếu, người phụ trách...">
+        <button class="cdc-m-scope-toggle" id="btnScopeToggle" style="display:none;">Đơn vị tôi</button>
+      </div>
+      <div class="cdc-m-chip-row" id="chipTrangThai">
+        <button class="cdc-m-chip active" data-trang-thai="">Tất cả</button>
+        <button class="cdc-m-chip" data-trang-thai="Mới giao">Mới giao</button>
+        <button class="cdc-m-chip" data-trang-thai="Đang thực hiện">Đang thực hiện</button>
+        <button class="cdc-m-chip" data-trang-thai="Chậm tiến độ">Chậm tiến độ</button>
+        <button class="cdc-m-chip" data-trang-thai="Quá hạn">Quá hạn</button>
+        <button class="cdc-m-chip" data-trang-thai="Hoàn thành">Hoàn thành</button>
+      </div>
+      <div id="dsNhiemVu"><div class="cdc-m-empty">Đang tải...</div></div>
+    </section>
+
+    <!-- ---------- BÁO CÁO ---------- -->
+    <section class="cdc-m-view" id="view-reports">
+      <div class="cdc-m-page-title">📄 Báo cáo tổng hợp</div>
+      <div class="cdc-m-card">
+        <div class="cdc-m-field">
+          <label>Loại kỳ</label>
+          <select id="rpLoaiKy">
+            <option value="TUAN">Tuần</option>
+            <option value="THANG">Tháng</option>
+            <option value="QUY">Quý</option>
+            <option value="NAM">Năm</option>
+          </select>
+        </div>
+        <div class="cdc-m-field" id="rpThamSoTuanWrap">
+          <label>Chọn ngày trong tuần</label>
+          <input type="date" id="rpThamSoTuan">
+        </div>
+        <div class="cdc-m-field" id="rpThamSoThangWrap" style="display:none;">
+          <label>Tháng</label>
+          <input type="month" id="rpThamSoThang">
+        </div>
+        <div class="cdc-m-field" id="rpThamSoQuyWrap" style="display:none;">
+          <label>Quý</label>
+          <select id="rpThamSoQuy"><option value="1">Quý 1</option><option value="2">Quý 2</option><option value="3">Quý 3</option><option value="4">Quý 4</option></select>
+        </div>
+        <div class="cdc-m-field" id="rpThamSoQuyNamWrap" style="display:none;">
+          <label>Năm (Quý)</label>
+          <input type="number" id="rpThamSoQuyNam" placeholder="vd 2026">
+        </div>
+        <div class="cdc-m-field" id="rpThamSoNamWrap" style="display:none;">
+          <label>Năm</label>
+          <input type="number" id="rpThamSoNam" placeholder="vd 2026">
+        </div>
+        <button class="cdc-m-btn cdc-m-btn--primary" id="btnXemBaoCao">Xem báo cáo</button>
+      </div>
+      <div id="rpKetQua"></div>
+    </section>
+
+  </main>
+
+  <!-- ============================= BOTTOM TAB BAR ============================= -->
+  <nav class="cdc-m-tabbar">
+    <button class="cdc-m-tab active" data-page="dashboard"><span class="cdc-m-tab__icon">📊</span>Tổng quan</button>
+    <button class="cdc-m-tab" data-page="tasks"><span class="cdc-m-tab__icon">📋</span>Nhiệm vụ</button>
+    <button class="cdc-m-tab" data-page="reports"><span class="cdc-m-tab__icon">📄</span>Báo cáo</button>
+  </nav>
+
+  <!-- ============================= SHEET: CHI TIẾT NHIỆM VỤ ============================= -->
+  <div class="cdc-m-sheet" id="sheetChiTiet">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetChiTiet">✕</button>
+      <h2 id="ctTieuDe">Chi tiết nhiệm vụ</h2>
+    </div>
+    <div class="cdc-m-sheet__body" id="ctNoiDung"></div>
+  </div>
+
+  <!-- ============================= SHEET: CẬP NHẬT TIẾN ĐỘ ============================= -->
+  <div class="cdc-m-sheet" id="sheetCapNhat">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetCapNhat">✕</button>
+      <h2>Cập nhật tiến độ</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <form id="formCapNhat">
+        <input type="hidden" id="cnMaNhiemVu">
+        <p class="cdc-m-identity-intro" id="cnTrichYeuNhiemVu"></p>
+
+        <div class="cdc-m-field">
+          <label>Người cập nhật</label>
+          <input type="text" id="cnNguoiCapNhat" readonly>
+        </div>
+
+        <div class="cdc-m-field">
+          <label>Dự kiến hoàn thành</label>
+          <input type="date" id="cnDuKienHoanThanh">
+        </div>
+
+        <div class="cdc-m-field" id="cnKhoiKetQua">
+          <label>Kết quả thực hiện trong tuần <span class="req">*</span></label>
+          <textarea id="cnKetQua" placeholder="Nhập kết quả đã thực hiện trong tuần..."></textarea>
+        </div>
+
+        <div class="cdc-m-field" id="cnKhoiTienDo">
+          <label>Tiến độ hiện tại <span class="req">*</span></label>
+          <textarea id="cnTienDoHienTai" placeholder="Mô tả bằng nội dung, không dùng tỷ lệ phần trăm..."></textarea>
+        </div>
+
+        <div class="cdc-m-field">
+          <label>Khó khăn, vướng mắc</label>
+          <textarea id="cnKhoKhan" placeholder="Nhập khó khăn hoặc kiến nghị (nếu có)..."></textarea>
+        </div>
+
+        <div class="cdc-m-field">
+          <label>Đính kèm ảnh / tệp</label>
+          <input type="file" id="cnTepDinhKem" multiple accept="image/*,.pdf,.doc,.docx">
+          <div class="hint">Có thể chụp ảnh trực tiếp từ điện thoại.</div>
+        </div>
+
+        <label class="cdc-m-checkbox"><input type="checkbox" id="cnCanChiDao"> Cần Ban Giám đốc chỉ đạo</label>
+        <label class="cdc-m-checkbox"><input type="checkbox" id="cnDaHoanThanh"> Đã hoàn thành nhiệm vụ</label>
+
+        <div class="cdc-m-field" id="cnKhoiNgayHoanThanh" style="display:none;">
+          <label>Ngày hoàn thành <span class="req">*</span></label>
+          <input type="date" id="cnNgayHoanThanh">
+        </div>
+
+        <div class="cdc-m-section-block" id="cnKhoiVanBanKetQua" style="display:none;">
+          <div class="cdc-m-section-block__title">📄 Văn bản kết quả</div>
+          <div class="cdc-m-field">
+            <label>Loại văn bản</label>
+            <select id="cnLoaiVanBanKetQua"></select>
+          </div>
+          <div class="cdc-m-field">
+            <label>Số ký hiệu</label>
+            <input type="text" id="cnSoKyHieuKetQua" placeholder="Nhập số ký hiệu văn bản...">
+          </div>
+          <div class="cdc-m-field">
+            <label>Ngày ban hành</label>
+            <input type="date" id="cnNgayBanHanhKetQua">
+          </div>
+          <div class="cdc-m-field">
+            <label>Trích yếu</label>
+            <textarea id="cnTrichYeuKetQua" placeholder="Nhập trích yếu văn bản..."></textarea>
+          </div>
+          <div class="cdc-m-field">
+            <label>Đính kèm văn bản</label>
+            <input type="file" id="cnTepVanBanKetQua" accept="image/*,.pdf,.doc,.docx">
+          </div>
+        </div>
+
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Lưu cập nhật</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= SHEET: ĐỊNH DANH (bắt buộc lần đầu) ============================= -->
+  <div class="cdc-m-sheet cdc-m-identity-sheet" id="sheetDinhDanh">
+    <div class="cdc-m-sheet__header">
+      <h2>Thông tin của bạn</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <p class="cdc-m-identity-intro">Ứng dụng không có đăng nhập — thông tin bên dưới chỉ để tự động điền "Người cập nhật" và xác định đơn vị của bạn, lưu trên chính điện thoại này.</p>
+      <form id="formDinhDanh">
+        <div class="cdc-m-field">
+          <label>Khoa/phòng <span class="req">*</span></label>
+          <select id="idKhoaPhong"><option value="">Chọn khoa/phòng...</option></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Họ và tên <span class="req">*</span></label>
+          <input type="text" id="idHoTen" placeholder="Nhập họ và tên...">
+        </div>
+        <div class="cdc-m-field">
+          <label>Số điện thoại <span class="req">*</span></label>
+          <input type="tel" id="idSoDienThoai" placeholder="VD: 0912345678">
+        </div>
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">Bắt đầu sử dụng</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= LOADING / TOAST ============================= -->
+  <div id="cdcMLoading"><div class="cdc-m-spinner"></div><div style="font-size:.8rem;color:var(--cdc-gray-500)">Đang tải...</div></div>
+  <div id="cdcMToast"></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
