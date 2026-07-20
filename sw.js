@@ -10,7 +10,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'cdc-nhiemvu-v1';
+const CACHE_VERSION = 'cdc-nhiemvu-v2';
 const PRECACHE = [
   './',
   './index.html',
