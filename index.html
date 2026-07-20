@@ -55,68 +55,213 @@
 
     <!-- ---------- NHIỆM VỤ ---------- -->
     <section class="cdc-m-view" id="view-tasks">
-      <div class="cdc-m-page-title">📋 Nhiệm vụ</div>
+      <div class="cdc-m-page-title-row">
+        <div class="cdc-m-page-title">📋 Nhiệm vụ</div>
+        <button class="cdc-m-icon-btn" id="btnMoBoLocNhiemVu" title="Bộ lọc">🔧</button>
+      </div>
+      <div class="alert-banner" id="bannerPhamViXem" style="display:none;"></div>
       <div class="cdc-m-filter-row">
         <input type="text" class="cdc-m-search" id="taskSearch" placeholder="Tìm theo mã, trích yếu, người phụ trách...">
-        <button class="cdc-m-scope-toggle" id="btnScopeToggle" style="display:none;">Đơn vị tôi</button>
       </div>
-      <div class="cdc-m-chip-row" id="chipTrangThai">
-        <button class="cdc-m-chip active" data-trang-thai="">Tất cả</button>
-        <button class="cdc-m-chip" data-trang-thai="Mới giao">Mới giao</button>
-        <button class="cdc-m-chip" data-trang-thai="Đang thực hiện">Đang thực hiện</button>
-        <button class="cdc-m-chip" data-trang-thai="Chậm tiến độ">Chậm tiến độ</button>
-        <button class="cdc-m-chip" data-trang-thai="Quá hạn">Quá hạn</button>
-        <button class="cdc-m-chip" data-trang-thai="Hoàn thành">Hoàn thành</button>
+      <div class="cdc-m-chip-row cdc-m-chip-row--scroll" id="chipTrangThai">
+        <button class="cdc-m-chip active" data-loc="TAT_CA">Tất cả</button>
+        <button class="cdc-m-chip" data-loc="DANG_THUC_HIEN">Đang thực hiện</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="DTH_QUA_HAN">↳ Quá hạn</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="DTH_TRONG_HAN">↳ Trong hạn</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="DTH_KHONG_CO_HAN">↳ Không có hạn</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="DTH_KHONG_CO_HAN_3T">↳ Không có hạn (3 tháng)</button>
+        <button class="cdc-m-chip" data-loc="HOAN_THANH">Hoàn thành</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="HT_DUNG_HAN">↳ Đúng hạn</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="HT_QUA_HAN">↳ Quá hạn</button>
+        <button class="cdc-m-chip cdc-m-chip--sub" data-loc="HT_KHONG_CO_HAN">↳ Không có hạn</button>
+        <button class="cdc-m-chip" data-loc="DUOC_DANH_DAU">⭐ Được đánh dấu</button>
       </div>
       <div id="dsNhiemVu"><div class="cdc-m-empty">Đang tải...</div></div>
     </section>
 
-    <!-- ---------- BÁO CÁO ---------- -->
-    <section class="cdc-m-view" id="view-reports">
-      <div class="cdc-m-page-title">📄 Báo cáo tổng hợp</div>
+    <!-- ---------- CHỈ TIÊU KẾ HOẠCH ---------- -->
+    <section class="cdc-m-view" id="view-chitieu">
+      <div class="cdc-m-page-title-row">
+        <div class="cdc-m-page-title">🎯 Chỉ tiêu kế hoạch</div>
+      </div>
+      <div class="alert-banner" id="bannerPhamViXemChiTieu" style="display:none;"></div>
       <div class="cdc-m-card">
         <div class="cdc-m-field">
-          <label>Loại kỳ</label>
-          <select id="rpLoaiKy">
-            <option value="TUAN">Tuần</option>
-            <option value="THANG">Tháng</option>
-            <option value="QUY">Quý</option>
-            <option value="NAM">Năm</option>
-          </select>
-        </div>
-        <div class="cdc-m-field" id="rpThamSoTuanWrap">
-          <label>Chọn ngày trong tuần</label>
-          <input type="date" id="rpThamSoTuan">
-        </div>
-        <div class="cdc-m-field" id="rpThamSoThangWrap" style="display:none;">
-          <label>Tháng</label>
-          <input type="month" id="rpThamSoThang">
-        </div>
-        <div class="cdc-m-field" id="rpThamSoQuyWrap" style="display:none;">
-          <label>Quý</label>
-          <select id="rpThamSoQuy"><option value="1">Quý 1</option><option value="2">Quý 2</option><option value="3">Quý 3</option><option value="4">Quý 4</option></select>
-        </div>
-        <div class="cdc-m-field" id="rpThamSoQuyNamWrap" style="display:none;">
-          <label>Năm (Quý)</label>
-          <input type="number" id="rpThamSoQuyNam" placeholder="vd 2026">
-        </div>
-        <div class="cdc-m-field" id="rpThamSoNamWrap" style="display:none;">
           <label>Năm</label>
-          <input type="number" id="rpThamSoNam" placeholder="vd 2026">
+          <select id="ctFilterNam"></select>
         </div>
-        <button class="cdc-m-btn cdc-m-btn--primary" id="btnXemBaoCao">Xem báo cáo</button>
+        <div class="cdc-m-field" id="ctFilterDonViKhoi">
+          <label>Đơn vị thực hiện</label>
+          <select id="ctFilterDonVi"><option value="">Tất cả</option></select>
+        </div>
       </div>
-      <div id="rpKetQua"></div>
+      <div id="dsChiTieu"><div class="cdc-m-empty">Đang tải...</div></div>
+    </section>
+
+    <!-- ---------- BÁO CÁO ---------- -->
+    <section class="cdc-m-view" id="view-reports">
+      <div class="cdc-m-page-title">📄 Báo cáo</div>
+      <div class="cdc-m-subtab-row">
+        <button class="cdc-m-subtab active" data-subtab="tonghop">Báo cáo tổng hợp</button>
+        <button class="cdc-m-subtab" data-subtab="chitieu">Báo cáo chỉ tiêu</button>
+      </div>
+
+      <div class="cdc-m-subview active" id="rp-tonghop">
+        <div class="cdc-m-card">
+          <div class="cdc-m-field">
+            <label>Loại kỳ</label>
+            <select id="rpLoaiKy">
+              <option value="TUAN">Tuần</option>
+              <option value="THANG">Tháng</option>
+              <option value="QUY">Quý</option>
+              <option value="NAM">Năm</option>
+            </select>
+          </div>
+          <div class="cdc-m-field" id="rpThamSoTuanWrap">
+            <label>Chọn ngày trong tuần</label>
+            <input type="date" id="rpThamSoTuan">
+          </div>
+          <div class="cdc-m-field" id="rpThamSoThangWrap" style="display:none;">
+            <label>Tháng</label>
+            <input type="month" id="rpThamSoThang">
+          </div>
+          <div class="cdc-m-field" id="rpThamSoQuyWrap" style="display:none;">
+            <label>Quý</label>
+            <select id="rpThamSoQuy"><option value="1">Quý 1</option><option value="2">Quý 2</option><option value="3">Quý 3</option><option value="4">Quý 4</option></select>
+          </div>
+          <div class="cdc-m-field" id="rpThamSoQuyNamWrap" style="display:none;">
+            <label>Năm (Quý)</label>
+            <input type="number" id="rpThamSoQuyNam" placeholder="vd 2026">
+          </div>
+          <div class="cdc-m-field" id="rpThamSoNamWrap" style="display:none;">
+            <label>Năm</label>
+            <input type="number" id="rpThamSoNam" placeholder="vd 2026">
+          </div>
+          <div class="cdc-m-field">
+            <label>Khoa/phòng</label>
+            <select id="rpDonVi"><option value="">Tất cả</option></select>
+          </div>
+          <div class="cdc-m-field">
+            <label>Nguồn giao</label>
+            <select id="rpNguonGiao"><option value="">Tất cả</option></select>
+          </div>
+          <button class="cdc-m-btn cdc-m-btn--primary" id="btnXemBaoCao">Xem báo cáo</button>
+        </div>
+        <div id="rpKetQua"></div>
+      </div>
+
+      <div class="cdc-m-subview" id="rp-chitieu">
+        <div class="cdc-m-card">
+          <div class="cdc-m-field">
+            <label>Năm</label>
+            <select id="rpctNam"></select>
+          </div>
+          <div class="cdc-m-field">
+            <label>Tiến độ luỹ kế đến quý</label>
+            <select id="rpctQuy"></select>
+          </div>
+          <div class="cdc-m-field">
+            <label>Đơn vị thực hiện</label>
+            <select id="rpctDonVi"><option value="">Tất cả</option></select>
+          </div>
+          <button class="cdc-m-btn cdc-m-btn--primary" id="btnXemBaoCaoChiTieu">Xem báo cáo</button>
+        </div>
+        <div id="rpctKetQua"></div>
+      </div>
+    </section>
+
+    <!-- ---------- DANH MỤC (QUẢN TRỊ) ---------- -->
+    <section class="cdc-m-view" id="view-admin">
+      <div class="cdc-m-page-title-row">
+        <div class="cdc-m-page-title">🗂️ Quản trị danh mục</div>
+        <button class="cdc-m-icon-btn" id="btnThemDanhMuc" title="Thêm giá trị mới">＋</button>
+      </div>
+      <div class="cdc-m-chip-row cdc-m-chip-row--scroll" id="chipLoaiDanhMuc">
+        <button class="cdc-m-chip active" data-loai="DON_VI">Đơn vị thực hiện</button>
+        <button class="cdc-m-chip" data-loai="NGUON_GIAO">Nguồn giao</button>
+        <button class="cdc-m-chip" data-loai="LOAI_VAN_BAN_GIAO">Loại văn bản giao</button>
+        <button class="cdc-m-chip" data-loai="LOAI_VAN_BAN_KETQUA">Loại văn bản kết quả</button>
+        <button class="cdc-m-chip" data-loai="MUC_UU_TIEN">Mức độ ưu tiên</button>
+        <button class="cdc-m-chip" data-loai="QUAN_TRI">Quản trị viên</button>
+      </div>
+      <div class="alert-banner" id="adminGhiChuQuanTri" style="display:none;">
+        Người có Họ và tên trùng khớp (không phân biệt hoa/thường) với 1 giá trị trong danh sách này sẽ được xem toàn bộ nhiệm vụ/chỉ tiêu, tương tự Phòng Kế hoạch - Nghiệp vụ/Ban Giám đốc.
+      </div>
+      <div id="dsDanhMuc"><div class="cdc-m-empty">Đang tải...</div></div>
     </section>
 
   </main>
+
+  <!-- ============================= NÚT THÊM NỔI (FAB) ============================= -->
+  <button class="cdc-m-fab" id="btnFab" style="display:none;">+</button>
+  <div class="cdc-m-fab-menu" id="fabMenu">
+    <div class="cdc-m-fab-menu__list">
+      <button type="button" class="cdc-m-fab-menu__item" id="fabTaoNhiemVu">📝 Tạo nhiệm vụ mới</button>
+      <button type="button" class="cdc-m-fab-menu__item" id="fabGiaoBan" style="display:none;">👥 Giao nhiệm vụ từ giao ban</button>
+    </div>
+  </div>
 
   <!-- ============================= BOTTOM TAB BAR ============================= -->
   <nav class="cdc-m-tabbar">
     <button class="cdc-m-tab active" data-page="dashboard"><span class="cdc-m-tab__icon">📊</span>Tổng quan</button>
     <button class="cdc-m-tab" data-page="tasks"><span class="cdc-m-tab__icon">📋</span>Nhiệm vụ</button>
+    <button class="cdc-m-tab" data-page="chitieu"><span class="cdc-m-tab__icon">🎯</span>Chỉ tiêu</button>
     <button class="cdc-m-tab" data-page="reports"><span class="cdc-m-tab__icon">📄</span>Báo cáo</button>
+    <button class="cdc-m-tab" data-page="admin"><span class="cdc-m-tab__icon">🗂️</span>Danh mục</button>
   </nav>
+
+  <!-- ============================= SHEET: BỘ LỌC NHIỆM VỤ ============================= -->
+  <div class="cdc-m-sheet" id="sheetBoLoc">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetBoLoc">✕</button>
+      <h2>Bộ lọc nhiệm vụ</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <div class="cdc-m-field">
+        <label>Đơn vị thực hiện</label>
+        <select id="flDonVi"><option value="">Tất cả</option></select>
+      </div>
+      <div class="cdc-m-field">
+        <label>Nguồn giao</label>
+        <select id="flNguonGiao"><option value="">Tất cả</option></select>
+      </div>
+      <div class="cdc-m-field">
+        <label>Người phụ trách</label>
+        <input type="text" id="flNguoiPhuTrach" placeholder="Nhập tên...">
+      </div>
+      <div class="cdc-m-field">
+        <label>Mức độ ưu tiên</label>
+        <select id="flMucUuTien"><option value="">Tất cả</option></select>
+      </div>
+      <div class="cdc-m-field">
+        <label>Loại báo cáo</label>
+        <select id="flLoaiKy">
+          <option value="">Tất cả</option>
+          <option value="TUAN">Tuần</option>
+          <option value="THANG">Tháng</option>
+          <option value="QUY">Quý</option>
+        </select>
+      </div>
+      <div class="cdc-m-field" id="flKyKhoi" style="display:none;">
+        <label>Kỳ báo cáo</label>
+        <select id="flKy"></select>
+      </div>
+      <div class="cdc-m-field-row" id="flTuanKhoi" style="display:none;">
+        <div class="cdc-m-field">
+          <label>Tháng (tuần)</label>
+          <select id="flTuanThang"></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Tuần</label>
+          <select id="flTuanTuan"></select>
+        </div>
+      </div>
+      <div class="cdc-m-sheet-actions">
+        <button type="button" class="cdc-m-btn cdc-m-btn--outline" id="btnXoaBoLocNhiemVu">Xoá lọc</button>
+        <button type="button" class="cdc-m-btn cdc-m-btn--primary" id="btnApDungBoLoc">Áp dụng</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============================= SHEET: CHI TIẾT NHIỆM VỤ ============================= -->
   <div class="cdc-m-sheet" id="sheetChiTiet">
@@ -202,6 +347,196 @@
         </div>
 
         <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Lưu cập nhật</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= SHEET: TẠO NHIỆM VỤ MỚI ============================= -->
+  <div class="cdc-m-sheet" id="sheetTaoNhiemVu">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetTaoNhiemVu">✕</button>
+      <h2>Tạo nhiệm vụ mới</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <form id="formTaoNhiemVu">
+        <div class="cdc-m-field">
+          <label>Nguồn giao <span class="req">*</span></label>
+          <select id="tvNguonGiao"></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Ngày giao <span class="req">*</span></label>
+          <input type="date" id="tvNgayGiao">
+        </div>
+        <div class="cdc-m-section-block">
+          <div class="cdc-m-section-block__title">📄 Văn bản giao (không bắt buộc)</div>
+          <div class="cdc-m-field">
+            <label>Loại văn bản</label>
+            <select id="tvLoaiVanBanGiao"></select>
+          </div>
+          <div class="cdc-m-field">
+            <label>Số ký hiệu</label>
+            <input type="text" id="tvSoKyHieuVanBan" placeholder="Nhập số ký hiệu văn bản...">
+          </div>
+          <div class="cdc-m-field">
+            <label>Ngày ban hành</label>
+            <input type="date" id="tvNgayBanHanhVanBan">
+          </div>
+        </div>
+        <div class="cdc-m-field">
+          <label>Trích yếu nội dung <span class="req">*</span></label>
+          <textarea id="tvTrichYeu" placeholder="Nhập trích yếu nội dung nhiệm vụ..."></textarea>
+        </div>
+        <div class="cdc-m-field">
+          <label>Đơn vị thực hiện <span class="req">*</span></label>
+          <select id="tvDonViThucHien"><option value="">Chọn đơn vị...</option></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Người phụ trách <span class="req">*</span></label>
+          <input type="text" id="tvNguoiPhuTrach" placeholder="Nhập tên người phụ trách...">
+        </div>
+        <div class="cdc-m-field">
+          <label>Hạn hoàn thành <span class="req">*</span></label>
+          <input type="date" id="tvHanHoanThanh">
+        </div>
+        <div class="cdc-m-field">
+          <label>Mức độ ưu tiên <span class="req">*</span></label>
+          <select id="tvMucUuTien"></select>
+        </div>
+        <label class="cdc-m-checkbox"><input type="checkbox" id="tvLaViecPhatSinh"> Là việc phát sinh (ngoài kế hoạch)</label>
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Tạo nhiệm vụ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= SHEET: GIAO NHIỆM VỤ TỪ GIAO BAN ============================= -->
+  <div class="cdc-m-sheet" id="sheetGiaoBan">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetGiaoBan">✕</button>
+      <h2>Giao nhiệm vụ từ giao ban</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <form id="formGiaoBan">
+        <p class="cdc-m-identity-intro">Dùng khi giao nhiều nhiệm vụ cùng lúc sau 1 cuộc họp giao ban. Các thông tin bên dưới áp dụng chung cho toàn bộ các dòng.</p>
+        <div class="cdc-m-field">
+          <label>Nguồn giao <span class="req">*</span></label>
+          <select id="gbNguonGiao"></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Ngày giao ban <span class="req">*</span></label>
+          <input type="date" id="gbNgayGiao">
+        </div>
+        <div class="cdc-m-field">
+          <label>Mức độ ưu tiên (áp dụng chung) <span class="req">*</span></label>
+          <select id="gbMucUuTien"></select>
+        </div>
+        <div class="cdc-m-section-block">
+          <div class="cdc-m-section-block__title">📄 Văn bản căn cứ (không bắt buộc)</div>
+          <div class="cdc-m-field">
+            <label>Loại văn bản</label>
+            <select id="gbLoaiVanBanGiao"></select>
+          </div>
+          <div class="cdc-m-field">
+            <label>Số ký hiệu</label>
+            <input type="text" id="gbSoKyHieuVanBan" placeholder="Nhập số ký hiệu văn bản...">
+          </div>
+          <div class="cdc-m-field">
+            <label>Ngày ban hành</label>
+            <input type="date" id="gbNgayBanHanhVanBan">
+          </div>
+        </div>
+
+        <div class="cdc-m-section-block__title">📋 Danh sách nhiệm vụ giao</div>
+        <div id="dsDongGiaoBan"></div>
+        <button type="button" class="cdc-m-btn cdc-m-btn--outline" id="btnThemDongGiaoBan">+ Thêm dòng</button>
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Lưu tất cả nhiệm vụ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= SHEET: CHI TIẾT CHỈ TIÊU ============================= -->
+  <div class="cdc-m-sheet" id="sheetChiTietChiTieu">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetChiTietChiTieu">✕</button>
+      <h2 id="cttTieuDe">Chi tiết chỉ tiêu</h2>
+    </div>
+    <div class="cdc-m-sheet__body" id="cttNoiDung"></div>
+  </div>
+
+  <!-- ============================= SHEET: BÁO CÁO TIẾN ĐỘ QUÝ (CHỈ TIÊU) ============================= -->
+  <div class="cdc-m-sheet" id="sheetCapNhatChiTieu">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetCapNhatChiTieu">✕</button>
+      <h2>Báo cáo tiến độ quý</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <form id="formCapNhatChiTieu">
+        <input type="hidden" id="cnctMaChiTieu">
+        <p class="cdc-m-identity-intro" id="cnctTenChiTieu"></p>
+        <div class="cdc-m-field">
+          <label>Người cập nhật</label>
+          <input type="text" id="cnctNguoiCapNhat" readonly>
+        </div>
+        <div class="cdc-m-field">
+          <label>Quý báo cáo <span class="req">*</span></label>
+          <select id="cnctQuyBaoCao"></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Kết quả thực hiện luỹ kế đến quý này <span class="req">*</span> (Kế hoạch: <span id="cnctKeHoachThamChieu"></span>)</label>
+          <input type="text" id="cnctKetQuaThucHien" placeholder="Nhập kết quả luỹ kế...">
+        </div>
+        <div class="cdc-m-field">
+          <label>Ghi chú</label>
+          <textarea id="cnctGhiChu" placeholder="Nhập ghi chú, khó khăn (nếu có)..."></textarea>
+        </div>
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Lưu báo cáo</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= SHEET: BAN HÀNH CHỈ TIÊU ============================= -->
+  <div class="cdc-m-sheet" id="sheetBanHanhChiTieu">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetBanHanhChiTieu">✕</button>
+      <h2>Ban hành chỉ tiêu kế hoạch</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <form id="formBanHanhChiTieu">
+        <p class="cdc-m-identity-intro">Chỉ tiêu có hiệu lực cả năm cho 1 đơn vị; các khoa/phòng sẽ báo cáo tiến độ luỹ kế theo từng quý.</p>
+        <div class="cdc-m-field">
+          <label>Năm áp dụng <span class="req">*</span></label>
+          <select id="ctbNam"></select>
+        </div>
+        <div class="cdc-m-field">
+          <label>Đơn vị thực hiện <span class="req">*</span></label>
+          <select id="ctbDonViThucHien"><option value="">Chọn đơn vị...</option></select>
+        </div>
+        <div class="cdc-m-section-block__title">📋 Danh sách chỉ tiêu</div>
+        <div id="dsDongChiTieu"></div>
+        <button type="button" class="cdc-m-btn cdc-m-btn--outline" id="btnThemDongChiTieu">+ Thêm dòng</button>
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Ban hành</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= SHEET: THÊM/SỬA DANH MỤC ============================= -->
+  <div class="cdc-m-sheet" id="sheetDanhMuc">
+    <div class="cdc-m-sheet__header">
+      <button class="cdc-m-sheet__close" data-close-sheet="sheetDanhMuc">✕</button>
+      <h2 id="dmTieuDe">Thêm giá trị danh mục</h2>
+    </div>
+    <div class="cdc-m-sheet__body">
+      <form id="formDanhMuc">
+        <input type="hidden" id="dmId">
+        <div class="cdc-m-field">
+          <label>Giá trị <span class="req">*</span></label>
+          <input type="text" id="dmGiaTri" placeholder="Nhập giá trị danh mục...">
+        </div>
+        <div class="cdc-m-field">
+          <label>Thứ tự hiển thị</label>
+          <input type="number" id="dmThuTu" min="1" value="1">
+        </div>
+        <label class="cdc-m-checkbox"><input type="checkbox" id="dmDangSuDung" checked> Đang sử dụng (hiển thị trong danh sách chọn)</label>
+        <button type="submit" class="cdc-m-btn cdc-m-btn--primary">💾 Lưu</button>
       </form>
     </div>
   </div>
