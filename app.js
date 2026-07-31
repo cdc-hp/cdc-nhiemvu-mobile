@@ -1270,6 +1270,51 @@ async function xuLyXemBaoCao() {
   }
 }
 
+/* ============================= XUẤT BÁO CÁO RA FILE WORD (.docx) ============================= */
+/* Khớp mẫu Tuần (Giao ban Sở Y tế) và mẫu Tháng (Kết quả thực hiện nhiệm vụ công tác
+   trọng tâm), gọi action xuatBaoCaoTuanDocx/xuatBaoCaoThangDocx (Code.gs ->
+   ReportDocxService.gs) — CÙNG action bản desktop gọi qua google.script.run. */
+
+const MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+/** Chuyển chuỗi base64 -> Blob rồi tải xuống trình duyệt (dùng chung cho mọi file xuất ra). */
+function taiXuongTepBase64(base64, tenTep, mimeType) {
+  const byteChars = atob(base64);
+  const byteNumbers = new Array(byteChars.length);
+  for (let i = 0; i < byteChars.length; i++) byteNumbers[i] = byteChars.charCodeAt(i);
+  const blob = new Blob([new Uint8Array(byteNumbers)], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = tenTep;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/** Xuất báo cáo (Tuần/Tháng) đang chọn ra file Word — luôn tổng hợp toàn Trung tâm. */
+async function xuatBaoCaoDocx() {
+  const loaiKy = $('rpLoaiKy').value;
+  if (loaiKy !== 'TUAN' && loaiKy !== 'THANG') {
+    thongBaoCanhBao('Xuất Word hiện chỉ hỗ trợ Báo cáo Tuần và Báo cáo Tháng.');
+    return;
+  }
+  let thamSo;
+  try { thamSo = layThamSoKy(); } catch (loi) { thongBaoLoi(loi); return; }
+  const dt = layDinhDanhHienTai();
+  const nguoiTao = dt ? `${dt.hoTen} (${dt.khoaPhong})` : 'Ẩn danh';
+
+  hienThiDangTai();
+  try {
+    const action = loaiKy === 'TUAN' ? 'xuatBaoCaoTuanDocx' : 'xuatBaoCaoThangDocx';
+    const ketQua = await goiApi(action, { thamSo, nguoiTao }, true);
+    taiXuongTepBase64(ketQua.base64, ketQua.tenTep, MIME_DOCX);
+    thongBaoThanhCong('Đã xuất file Word.');
+  } catch (loi) {
+    thongBaoLoi(loi);
+  } finally {
+    anDangTai();
+  }
+}
+
 /* ============================= BÁO CÁO CHỈ TIÊU ============================= */
 
 async function khoiTaoBoLocBaoCaoChiTieu() {
@@ -1546,6 +1591,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $('rpLoaiKy').addEventListener('change', xuLyDoiLoaiKy);
   $('btnXemBaoCao').addEventListener('click', xuLyXemBaoCao);
+  $('btnXuatDocx').addEventListener('click', xuatBaoCaoDocx);
   $('rpThamSoTuan').valueAsDate = new Date();
   $('rpThamSoQuyNam').value = $('rpThamSoNam').value = new Date().getFullYear();
   $('btnXemBaoCaoChiTieu').addEventListener('click', xuLyXemBaoCaoChiTieu);

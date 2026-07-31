@@ -16,11 +16,19 @@ Cách hoạt động:
 ## Tính năng bản v1
 
 - **Tổng quan**: 6 thẻ thống kê (tổng số / hoàn thành / đang thực hiện / chậm tiến độ / sắp đến hạn / quá hạn) + danh sách sắp đến hạn.
-- **Nhiệm vụ**: danh sách theo đơn vị của mình (Phòng KHNV / Ban Giám đốc / Quản trị viên thấy tất cả — cùng quy tắc bản desktop), tìm kiếm, lọc theo trạng thái, xem chi tiết (lịch sử cập nhật + văn bản kết quả), **cập nhật tiến độ** ngay trên điện thoại (kèm chụp ảnh đính kèm, đánh dấu hoàn thành + khai văn bản kết quả).
-- **Báo cáo**: xem báo cáo tổng hợp theo Tuần / Tháng / Quý / Năm.
+- **Nhiệm vụ**: danh sách theo đơn vị của mình (Phòng KHNV / Ban Giám đốc / Quản trị viên thấy tất cả — cùng quy tắc bản desktop), tìm kiếm, lọc theo trạng thái, xem chi tiết (lịch sử cập nhật + văn bản kết quả), **cập nhật tiến độ** ngay trên điện thoại (kèm chụp ảnh đính kèm, đánh dấu hoàn thành + khai văn bản kết quả), **tạo nhiệm vụ mới** và **giao nhiệm vụ hàng loạt từ giao ban** (nhiều dòng cùng lúc).
+- **Chỉ tiêu kế hoạch**: xem, ban hành hàng loạt theo đơn vị/năm, báo cáo tiến độ luỹ kế theo quý — module riêng, đầy đủ như bản desktop.
+- **Báo cáo**: xem báo cáo tổng hợp theo Tuần / Tháng / Quý / Năm + báo cáo chỉ tiêu, và **xuất file Word (.docx)** cho báo cáo Tuần (khớp mẫu Giao ban Sở Y tế) và báo cáo Tháng (khớp mẫu Kết quả thực hiện nhiệm vụ công tác trọng tâm) — xem "Xuất báo cáo Word" bên dưới.
+- **Quản trị danh mục**: thêm/sửa/ẩn-hiện các danh mục dùng chung (Đơn vị, Nguồn giao, Loại văn bản, Mức ưu tiên, Quản trị viên) — đầy đủ như `admin.html` bản desktop.
 - Nhận diện offline: mất mạng hiện banner "📡 Không có mạng — Thử lại", giao diện vẫn mở được nhờ service worker cache.
 
-Chưa có ở v1 (vẫn dùng bản desktop): tạo nhiệm vụ mới / giao ban hàng loạt, module Chỉ tiêu kế hoạch, trang Quản trị danh mục.
+Bản di động đã có **đầy đủ chức năng như bản desktop** (cùng gọi chung API `Code.gs`), chỉ khác cách sắp xếp giao diện cho phù hợp màn hình nhỏ (tab bar dưới, sheet trượt lên thay vì modal, nút nổi (FAB) để tạo mới).
+
+## Xuất báo cáo Word (.docx)
+
+Trang **Báo cáo → Báo cáo tổng hợp** có nút "📄 Xuất Word (.docx)" (cùng vị trí bản desktop), chỉ hoạt động với Loại kỳ **Tuần** hoặc **Tháng** (2 loại kỳ có mẫu Word tương ứng — Quý/Năm chưa có mẫu). File luôn tổng hợp **toàn Trung tâm** (không theo bộ lọc Khoa/phòng - Nguồn giao trên màn hình), do `ReportDocxService.gs` dựng và tải thẳng về máy — không lưu lại trên Drive.
+
+Các mục không có trong dữ liệu Nhiệm vụ của hệ thống (tình hình dịch bệnh, chỉ đạo của Lãnh đạo Sở tại cuộc họp...) được giữ nguyên tiêu đề, để trống nội dung — gõ tay bổ sung trực tiếp trong Word sau khi xuất.
 
 ## Triển khai (làm 1 lần)
 
